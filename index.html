@@ -143,6 +143,117 @@
         .score-draw {
             color: #6c757d;
         }
+
+        /* Silly button styles */
+        .silly-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
+            z-index: 999;
+        }
+
+        .silly-button:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 0, 0, 0.6);
+        }
+
+        .silly-button:active {
+            transform: translateY(0);
+        }
+
+        /* Meme overlay styles */
+        .meme-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            cursor: pointer;
+        }
+
+        .meme-overlay.show {
+            display: flex;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .meme-overlay.hide {
+            animation: fadeOut 0.3s ease-out;
+        }
+
+        .meme-image {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            transform: scale(0.5) rotate(-10deg);
+        }
+
+        .meme-overlay.show .meme-image {
+            animation: slideInRotate 0.5s ease-out forwards;
+        }
+
+        .meme-overlay.hide .meme-image {
+            animation: slideOutRotate 0.3s ease-in forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes slideInRotate {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) rotate(-10deg) translateY(-50px);
+            }
+            60% {
+                transform: scale(1.1) rotate(2deg) translateY(0);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg) translateY(0);
+            }
+        }
+
+        @keyframes slideOutRotate {
+            0% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.5) rotate(10deg) translateY(50px);
+            }
+        }
     </style>
 </head>
 <body>
@@ -178,6 +289,14 @@
         <div class="controls">
             <button id="resetBtn">New Game</button>
         </div>
+    </div>
+
+    <!-- Silly button -->
+    <button class="silly-button" id="sillyBtn">😎 Deal With It</button>
+
+    <!-- Meme overlay -->
+    <div class="meme-overlay" id="memeOverlay">
+        <img src="./images/deal-with-it.jpg" alt="Deal with it" class="meme-image" id="memeImage">
     </div>
 
     <script>
@@ -319,6 +438,25 @@
         }
 
         const game = new TicTacToe();
+
+        // Silly button functionality
+        const sillyBtn = document.getElementById('sillyBtn');
+        const memeOverlay = document.getElementById('memeOverlay');
+
+        function showMeme() {
+            memeOverlay.classList.remove('hide');
+            memeOverlay.classList.add('show');
+        }
+
+        function hideMeme() {
+            memeOverlay.classList.add('hide');
+            setTimeout(() => {
+                memeOverlay.classList.remove('show', 'hide');
+            }, 300);
+        }
+
+        sillyBtn.addEventListener('click', showMeme);
+        memeOverlay.addEventListener('click', hideMeme);
     </script>
 </body>
 </html>
