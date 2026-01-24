@@ -1,0 +1,14 @@
+# Git files
+.git
+.gitignore
+
+# Build artifacts
+tictactoe
+tictactoe.exe
+dist/
+
+# Documentation
+README.md
+
+# Make
+Makefile
