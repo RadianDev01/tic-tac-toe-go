@@ -1,8 +1,30 @@
 # Tic Tac Toe (Go)
 
-A simple command-line Tic Tac Toe game written in Go.
+A Tic Tac Toe game written in Go with both web and command-line interfaces.
 
-## Features
+## Play in Browser (Web Version)
+
+The easiest way to play is through the web interface:
+
+```bash
+# Start the web server
+go run server.go
+
+# Open http://localhost:8080 in your browser
+```
+
+### Web Features
+- Beautiful, responsive UI with gradient styling
+- Score tracking (persisted in browser)
+- Winning cell highlighting
+- Smooth animations
+- Click-to-play interface
+
+See [README_WEB.md](README_WEB.md) for more details.
+
+## Command-Line Version
+
+### Features
 
 - Two-player gameplay
 - Interactive CLI interface
