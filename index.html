@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .status {
+            font-size: 1.5em;
+            margin: 20px 0;
+            color: #667eea;
+            font-weight: bold;
+            min-height: 40px;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 120px);
+            grid-template-rows: repeat(3, 120px);
+            gap: 10px;
+            margin: 30px auto;
+            justify-content: center;
+        }
+
+        .cell {
+            background: #f8f9fa;
+            border: 3px solid #667eea;
+            border-radius: 10px;
+            font-size: 3em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+
+        .cell:hover:not(.taken) {
+            background: #e9ecef;
+            transform: scale(1.05);
+        }
+
+        .cell.taken {
+            cursor: not-allowed;
+        }
+
+        .cell.x {
+            color: #667eea;
+        }
+
+        .cell.o {
+            color: #764ba2;
+        }
+
+        .cell.winning {
+            background: #ffd700;
+            animation: pulse 0.5s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .controls {
+            margin-top: 30px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+
+        .score-item {
+            padding: 10px 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .score-x {
+            color: #667eea;
+        }
+
+        .score-o {
+            color: #764ba2;
+        }
+
+        .score-draw {
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tic Tac Toe</h1>
+
+        <div class="score-board">
+            <div class="score-item">
+                <span class="score-x">X: <span id="scoreX">0</span></span>
+            </div>
+            <div class="score-item">
+                <span class="score-draw">Draws: <span id="scoreDraw">0</span></span>
+            </div>
+            <div class="score-item">
+                <span class="score-o">O: <span id="scoreO">0</span></span>
+            </div>
+        </div>
+
+        <div class="status" id="status">Player X's turn</div>
+
+        <div class="board" id="board">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+
+        <div class="controls">
+            <button id="resetBtn">New Game</button>
+        </div>
+    </div>
+
+    <script>
+        class TicTacToe {
+            constructor() {
+                this.board = Array(9).fill('');
+                this.currentPlayer = 'X';
+                this.gameActive = true;
+                this.scores = {
+                    X: 0,
+                    O: 0,
+                    draw: 0
+                };
+
+                this.winningConditions = [
+                    [0, 1, 2],
+                    [3, 4, 5],
+                    [6, 7, 8],
+                    [0, 3, 6],
+                    [1, 4, 7],
+                    [2, 5, 8],
+                    [0, 4, 8],
+                    [2, 4, 6]
+                ];
+
+                this.init();
+                this.loadScores();
+            }
+
+            init() {
+                this.cells = document.querySelectorAll('.cell');
+                this.statusDisplay = document.getElementById('status');
+                this.resetBtn = document.getElementById('resetBtn');
+
+                this.cells.forEach(cell => {
+                    cell.addEventListener('click', (e) => this.handleCellClick(e));
+                });
+
+                this.resetBtn.addEventListener('click', () => this.resetGame());
+            }
+
+            loadScores() {
+                const saved = localStorage.getItem('tictactoe-scores');
+                if (saved) {
+                    this.scores = JSON.parse(saved);
+                    this.updateScoreDisplay();
+                }
+            }
+
+            saveScores() {
+                localStorage.setItem('tictactoe-scores', JSON.stringify(this.scores));
+                this.updateScoreDisplay();
+            }
+
+            updateScoreDisplay() {
+                document.getElementById('scoreX').textContent = this.scores.X;
+                document.getElementById('scoreO').textContent = this.scores.O;
+                document.getElementById('scoreDraw').textContent = this.scores.draw;
+            }
+
+            handleCellClick(e) {
+                const cell = e.target;
+                const index = parseInt(cell.getAttribute('data-index'));
+
+                if (this.board[index] !== '' || !this.gameActive) {
+                    return;
+                }
+
+                this.makeMove(index, cell);
+            }
+
+            makeMove(index, cell) {
+                this.board[index] = this.currentPlayer;
+                cell.textContent = this.currentPlayer;
+                cell.classList.add('taken', this.currentPlayer.toLowerCase());
+
+                if (this.checkWin()) {
+                    this.endGame(false);
+                } else if (this.checkDraw()) {
+                    this.endGame(true);
+                } else {
+                    this.switchPlayer();
+                }
+            }
+
+            checkWin() {
+                for (let condition of this.winningConditions) {
+                    const [a, b, c] = condition;
+                    if (this.board[a] &&
+                        this.board[a] === this.board[b] &&
+                        this.board[a] === this.board[c]) {
+                        this.highlightWinningCells(condition);
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            highlightWinningCells(condition) {
+                condition.forEach(index => {
+                    this.cells[index].classList.add('winning');
+                });
+            }
+
+            checkDraw() {
+                return this.board.every(cell => cell !== '');
+            }
+
+            endGame(isDraw) {
+                this.gameActive = false;
+
+                if (isDraw) {
+                    this.statusDisplay.textContent = "It's a draw!";
+                    this.scores.draw++;
+                } else {
+                    this.statusDisplay.textContent = `Player ${this.currentPlayer} wins!`;
+                    this.scores[this.currentPlayer]++;
+                }
+
+                this.saveScores();
+            }
+
+            switchPlayer() {
+                this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
+                this.statusDisplay.textContent = `Player ${this.currentPlayer}'s turn`;
+            }
+
+            resetGame() {
+                this.board = Array(9).fill('');
+                this.currentPlayer = 'X';
+                this.gameActive = true;
+                this.statusDisplay.textContent = "Player X's turn";
+
+                this.cells.forEach(cell => {
+                    cell.textContent = '';
+                    cell.classList.remove('taken', 'x', 'o', 'winning');
+                });
+            }
+        }
+
+        const game = new TicTacToe();
+    </script>
+</body>
+</html>

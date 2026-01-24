@@ -1,6 +1,7 @@
 # Binaries
 tictactoe
 tictactoe.exe
+server
 *.exe
 *.out
 
