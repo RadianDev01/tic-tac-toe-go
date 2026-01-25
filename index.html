@@ -5,6 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe</title>
     <style>
+        :root {
+            --bg-gradient-start: #667eea;
+            --bg-gradient-end: #764ba2;
+            --container-bg: white;
+            --container-shadow: rgba(0, 0, 0, 0.3);
+            --text-primary: #333;
+            --text-secondary: #6c757d;
+            --status-color: #667eea;
+            --cell-bg: #f8f9fa;
+            --cell-hover-bg: #e9ecef;
+            --cell-border: #667eea;
+            --cell-text: #333;
+            --player-x: #667eea;
+            --player-o: #764ba2;
+            --winning-bg: #ffd700;
+            --score-bg: #f8f9fa;
+        }
+
+        [data-theme="dark"] {
+            --bg-gradient-start: #1a1a2e;
+            --bg-gradient-end: #16213e;
+            --container-bg: #0f0f23;
+            --container-shadow: rgba(0, 0, 0, 0.5);
+            --text-primary: #e0e0e0;
+            --text-secondary: #9e9e9e;
+            --status-color: #8b9dff;
+            --cell-bg: #1a1a2e;
+            --cell-hover-bg: #252545;
+            --cell-border: #8b9dff;
+            --cell-text: #e0e0e0;
+            --player-x: #8b9dff;
+            --player-o: #b388ff;
+            --winning-bg: #ffc107;
+            --score-bg: #1a1a2e;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -17,29 +53,33 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            transition: background 0.3s ease;
         }
 
         .container {
             text-align: center;
-            background: white;
+            background: var(--container-bg);
             padding: 40px;
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 60px var(--container-shadow);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
         }
 
         h1 {
-            color: #333;
+            color: var(--text-primary);
             margin-bottom: 10px;
             font-size: 2.5em;
+            transition: color 0.3s ease;
         }
 
         .status {
             font-size: 1.5em;
             margin: 20px 0;
-            color: #667eea;
+            color: var(--status-color);
             font-weight: bold;
             min-height: 40px;
+            transition: color 0.3s ease;
         }
 
         .board {
@@ -52,8 +92,8 @@
         }
 
         .cell {
-            background: #f8f9fa;
-            border: 3px solid #667eea;
+            background: var(--cell-bg);
+            border: 3px solid var(--cell-border);
             border-radius: 10px;
             font-size: 3em;
             font-weight: bold;
@@ -62,11 +102,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #333;
+            color: var(--cell-text);
         }
 
         .cell:hover:not(.taken) {
-            background: #e9ecef;
+            background: var(--cell-hover-bg);
             transform: scale(1.05);
         }
 
@@ -75,15 +115,15 @@
         }
 
         .cell.x {
-            color: #667eea;
+            color: var(--player-x);
         }
 
         .cell.o {
-            color: #764ba2;
+            color: var(--player-o);
         }
 
         .cell.winning {
-            background: #ffd700;
+            background: var(--winning-bg);
             animation: pulse 0.5s ease-in-out;
         }
 
@@ -94,6 +134,9 @@
 
         .controls {
             margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
         }
 
         button {
@@ -117,6 +160,17 @@
             transform: translateY(0);
         }
 
+        .theme-toggle {
+            background: linear-gradient(135deg, #4a4a4a 0%, #2d2d2d 100%);
+            padding: 15px 25px;
+            font-size: 1.2em;
+        }
+
+        [data-theme="dark"] .theme-toggle {
+            background: linear-gradient(135deg, #ffd700 0%, #ffb700 100%);
+            color: #333;
+        }
+
         .score-board {
             display: flex;
             justify-content: center;
@@ -127,21 +181,49 @@
 
         .score-item {
             padding: 10px 20px;
-            background: #f8f9fa;
+            background: var(--score-bg);
             border-radius: 10px;
             font-weight: bold;
+            transition: background 0.3s ease;
         }
 
         .score-x {
-            color: #667eea;
+            color: var(--player-x);
+            transition: color 0.3s ease;
         }
 
         .score-o {
-            color: #764ba2;
+            color: var(--player-o);
+            transition: color 0.3s ease;
         }
 
         .score-draw {
-            color: #6c757d;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --bg-gradient-start: #1a1a2e;
+                --bg-gradient-end: #16213e;
+                --container-bg: #0f0f23;
+                --container-shadow: rgba(0, 0, 0, 0.5);
+                --text-primary: #e0e0e0;
+                --text-secondary: #9e9e9e;
+                --status-color: #8b9dff;
+                --cell-bg: #1a1a2e;
+                --cell-hover-bg: #252545;
+                --cell-border: #8b9dff;
+                --cell-text: #e0e0e0;
+                --player-x: #8b9dff;
+                --player-o: #b388ff;
+                --winning-bg: #ffc107;
+                --score-bg: #1a1a2e;
+            }
+            :root:not([data-theme="light"]) .theme-toggle {
+                background: linear-gradient(135deg, #ffd700 0%, #ffb700 100%);
+                color: #333;
+            }
         }
 
         /* Silly button styles */
@@ -288,6 +370,7 @@
 
         <div class="controls">
             <button id="resetBtn">New Game</button>
+            <button class="theme-toggle" id="themeToggle">Dark Mode</button>
         </div>
     </div>
 
@@ -457,6 +540,50 @@
 
         sillyBtn.addEventListener('click', showMeme);
         memeOverlay.addEventListener('click', hideMeme);
+
+        // Dark mode functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const root = document.documentElement;
+
+        function getSystemTheme() {
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                root.setAttribute('data-theme', 'dark');
+                themeToggle.textContent = 'Light Mode';
+            } else {
+                root.setAttribute('data-theme', 'light');
+                themeToggle.textContent = 'Dark Mode';
+            }
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('tictactoe-theme');
+            if (savedTheme) {
+                setTheme(savedTheme);
+            } else {
+                setTheme(getSystemTheme());
+            }
+        }
+
+        function toggleTheme() {
+            const currentTheme = root.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            setTheme(newTheme);
+            localStorage.setItem('tictactoe-theme', newTheme);
+        }
+
+        themeToggle.addEventListener('click', toggleTheme);
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            if (!localStorage.getItem('tictactoe-theme')) {
+                setTheme(e.matches ? 'dark' : 'light');
+            }
+        });
+
+        initTheme();
     </script>
 </body>
 </html>
