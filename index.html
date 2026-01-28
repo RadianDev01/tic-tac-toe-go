@@ -251,6 +251,166 @@
             transition: color 0.3s ease;
         }
 
+        /* User authentication styles */
+        .user-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--score-bg);
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .auth-form {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .auth-form input {
+            padding: 10px 15px;
+            border: 2px solid var(--cell-border);
+            border-radius: 8px;
+            font-size: 1em;
+            background: var(--container-bg);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .auth-form input:focus {
+            outline: none;
+            border-color: var(--player-x);
+        }
+
+        .auth-btn {
+            padding: 10px 20px;
+            font-size: 0.9em;
+            border-radius: 8px;
+        }
+
+        .auth-btn.secondary {
+            background: var(--cell-bg);
+            color: var(--text-primary);
+            border: 2px solid var(--cell-border);
+        }
+
+        .user-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .user-info .username {
+            font-weight: bold;
+            color: var(--player-x);
+            font-size: 1.1em;
+        }
+
+        .user-info .user-stats {
+            color: var(--text-secondary);
+            font-size: 0.95em;
+        }
+
+        .logout-btn {
+            padding: 8px 15px;
+            font-size: 0.85em;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        /* Leaderboard styles */
+        .leaderboard-btn {
+            padding: 10px 20px;
+            font-size: 0.9em;
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        }
+
+        .leaderboard-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9998;
+        }
+
+        .leaderboard-overlay.show {
+            display: flex;
+        }
+
+        .leaderboard-modal {
+            background: var(--container-bg);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 400px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .leaderboard-modal h2 {
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        .leaderboard-list {
+            list-style: none;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 15px;
+            margin: 5px 0;
+            background: var(--score-bg);
+            border-radius: 8px;
+            color: var(--text-primary);
+        }
+
+        .leaderboard-item .rank {
+            font-weight: bold;
+            color: var(--player-x);
+            min-width: 30px;
+        }
+
+        .leaderboard-item .name {
+            flex: 1;
+            text-align: left;
+            margin-left: 10px;
+        }
+
+        .leaderboard-item .wins {
+            font-weight: bold;
+            color: var(--player-o);
+        }
+
+        .leaderboard-item:first-child {
+            background: linear-gradient(135deg, #ffd700 0%, #ffb700 100%);
+            color: #333;
+        }
+
+        .leaderboard-item:first-child .rank,
+        .leaderboard-item:first-child .wins {
+            color: #333;
+        }
+
+        .close-leaderboard {
+            margin-top: 20px;
+            width: 100%;
+        }
+
         @media (prefers-color-scheme: dark) {
             :root:not([data-theme="light"]) {
                 --bg-gradient-start: #1a1a2e;
@@ -391,6 +551,24 @@
     <div class="container">
         <h1>Tic Tac Toe</h1>
 
+        <!-- User Authentication Section -->
+        <div class="user-section" id="userSection">
+            <!-- Login/Register Form (shown when not logged in) -->
+            <div class="auth-form" id="authForm">
+                <input type="text" id="usernameInput" placeholder="Enter username" maxlength="20">
+                <button class="auth-btn" id="loginBtn">Login</button>
+                <button class="auth-btn secondary" id="registerBtn">Register</button>
+            </div>
+            <!-- User Info (shown when logged in) -->
+            <div class="user-info" id="userInfo" style="display: none;">
+                <span class="username" id="displayUsername"></span>
+                <span class="user-stats" id="userStats"></span>
+                <button class="leaderboard-btn" id="leaderboardBtn">Leaderboard</button>
+                <button class="logout-btn" id="logoutBtn">Logout</button>
+            </div>
+            <div class="error-message" id="authError"></div>
+        </div>
+
         <div class="score-board">
             <div class="score-item">
                 <span class="score-x">X: <span id="scoreX">0</span></span>
@@ -429,7 +607,237 @@
         <img src="./images/deal-with-it.png" alt="Deal with it" class="meme-image" id="memeImage">
     </div>
 
+    <!-- Leaderboard overlay -->
+    <div class="leaderboard-overlay" id="leaderboardOverlay">
+        <div class="leaderboard-modal">
+            <h2>Leaderboard</h2>
+            <ul class="leaderboard-list" id="leaderboardList">
+                <!-- Populated by JavaScript -->
+            </ul>
+            <button class="close-leaderboard" id="closeLeaderboard">Close</button>
+        </div>
+    </div>
+
     <script>
+        // User Authentication Manager
+        class UserManager {
+            constructor() {
+                this.currentUser = null;
+                this.token = null;
+                this.init();
+            }
+
+            init() {
+                // Load saved session
+                const savedToken = localStorage.getItem('tictactoe-token');
+                const savedUser = localStorage.getItem('tictactoe-user');
+                if (savedToken && savedUser) {
+                    this.token = savedToken;
+                    this.currentUser = JSON.parse(savedUser);
+                    this.updateUI();
+                }
+
+                // Setup event listeners
+                document.getElementById('loginBtn').addEventListener('click', () => this.login());
+                document.getElementById('registerBtn').addEventListener('click', () => this.register());
+                document.getElementById('logoutBtn').addEventListener('click', () => this.logout());
+                document.getElementById('leaderboardBtn').addEventListener('click', () => this.showLeaderboard());
+                document.getElementById('closeLeaderboard').addEventListener('click', () => this.hideLeaderboard());
+                document.getElementById('leaderboardOverlay').addEventListener('click', (e) => {
+                    if (e.target.id === 'leaderboardOverlay') this.hideLeaderboard();
+                });
+
+                // Enter key to login
+                document.getElementById('usernameInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.login();
+                });
+            }
+
+            async login() {
+                const username = document.getElementById('usernameInput').value.trim();
+                if (!username) {
+                    this.showError('Please enter a username');
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/api/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username })
+                    });
+
+                    const data = await response.json();
+                    if (response.ok) {
+                        this.currentUser = data.user;
+                        this.token = data.token;
+                        this.saveSession();
+                        this.updateUI();
+                        this.clearError();
+                    } else {
+                        this.showError(data.error || 'Login failed');
+                    }
+                } catch (err) {
+                    this.showError('Connection error. Is the server running?');
+                }
+            }
+
+            async register() {
+                const username = document.getElementById('usernameInput').value.trim();
+                if (!username) {
+                    this.showError('Please enter a username');
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/api/register', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username })
+                    });
+
+                    const data = await response.json();
+                    if (response.ok) {
+                        this.currentUser = data.user;
+                        this.token = data.token;
+                        this.saveSession();
+                        this.updateUI();
+                        this.clearError();
+                    } else {
+                        this.showError(data.error || 'Registration failed');
+                    }
+                } catch (err) {
+                    this.showError('Connection error. Is the server running?');
+                }
+            }
+
+            async logout() {
+                if (this.token) {
+                    try {
+                        await fetch('/api/logout', {
+                            method: 'POST',
+                            headers: { 'Authorization': this.token }
+                        });
+                    } catch (err) {
+                        // Ignore errors on logout
+                    }
+                }
+
+                this.currentUser = null;
+                this.token = null;
+                localStorage.removeItem('tictactoe-token');
+                localStorage.removeItem('tictactoe-user');
+                this.updateUI();
+            }
+
+            async updateScore(result) {
+                if (!this.token) return;
+
+                try {
+                    const response = await fetch('/api/score', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': this.token
+                        },
+                        body: JSON.stringify({ result })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        this.currentUser = data;
+                        this.saveSession();
+                        this.updateUserStats();
+                    }
+                } catch (err) {
+                    console.error('Error updating score:', err);
+                }
+            }
+
+            async showLeaderboard() {
+                try {
+                    const response = await fetch('/api/leaderboard');
+                    const users = await response.json();
+
+                    const list = document.getElementById('leaderboardList');
+                    list.innerHTML = '';
+
+                    if (users.length === 0) {
+                        list.innerHTML = '<li class="leaderboard-item">No players yet</li>';
+                    } else {
+                        users.forEach((user, index) => {
+                            const item = document.createElement('li');
+                            item.className = 'leaderboard-item';
+                            item.innerHTML = `
+                                <span class="rank">#${index + 1}</span>
+                                <span class="name">${this.escapeHtml(user.username)}</span>
+                                <span class="wins">${user.scores.wins} wins</span>
+                            `;
+                            list.appendChild(item);
+                        });
+                    }
+
+                    document.getElementById('leaderboardOverlay').classList.add('show');
+                } catch (err) {
+                    this.showError('Could not load leaderboard');
+                }
+            }
+
+            hideLeaderboard() {
+                document.getElementById('leaderboardOverlay').classList.remove('show');
+            }
+
+            saveSession() {
+                localStorage.setItem('tictactoe-token', this.token);
+                localStorage.setItem('tictactoe-user', JSON.stringify(this.currentUser));
+            }
+
+            updateUI() {
+                const authForm = document.getElementById('authForm');
+                const userInfo = document.getElementById('userInfo');
+
+                if (this.currentUser) {
+                    authForm.style.display = 'none';
+                    userInfo.style.display = 'flex';
+                    document.getElementById('displayUsername').textContent = this.currentUser.username;
+                    this.updateUserStats();
+                } else {
+                    authForm.style.display = 'flex';
+                    userInfo.style.display = 'none';
+                    document.getElementById('usernameInput').value = '';
+                }
+            }
+
+            updateUserStats() {
+                if (this.currentUser) {
+                    const stats = this.currentUser.scores;
+                    document.getElementById('userStats').textContent =
+                        `W: ${stats.wins} | L: ${stats.losses} | D: ${stats.draws}`;
+                }
+            }
+
+            showError(message) {
+                document.getElementById('authError').textContent = message;
+            }
+
+            clearError() {
+                document.getElementById('authError').textContent = '';
+            }
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            isLoggedIn() {
+                return this.currentUser !== null;
+            }
+        }
+
+        // Initialize user manager
+        const userManager = new UserManager();
+
         class TicTacToe {
             constructor(boardSize = 3) {
                 this.boardSize = boardSize;
@@ -626,9 +1034,21 @@
                 if (isDraw) {
                     this.statusDisplay.textContent = "It's a draw!";
                     this.scores.draw++;
+                    // Report draw to backend for logged-in user
+                    if (userManager.isLoggedIn()) {
+                        userManager.updateScore('draw');
+                    }
                 } else {
                     this.statusDisplay.textContent = `Player ${this.currentPlayer} wins!`;
                     this.scores[this.currentPlayer]++;
+                    // Report win/loss to backend for logged-in user (X is the logged-in player)
+                    if (userManager.isLoggedIn()) {
+                        if (this.currentPlayer === 'X') {
+                            userManager.updateScore('win');
+                        } else {
+                            userManager.updateScore('loss');
+                        }
+                    }
                 }
 
                 this.saveScores();

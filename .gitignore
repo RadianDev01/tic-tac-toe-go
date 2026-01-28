@@ -5,6 +5,9 @@ server
 *.exe
 *.out
 
+# Database
+users.json
+
 # Build artifacts
 dist/
 
