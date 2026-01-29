@@ -53,6 +53,10 @@ type GameRoom struct {
 	Winner      string    `json:"winner"`       // "X", "O", "draw", or ""
 	WinningLine []int     `json:"winning_line"` // indices of winning cells
 	LastMove    int       `json:"last_move"`    // index of last move
+	ShowEmote   bool      `json:"show_emote"`   // whether to show emote
+	EmoteType   string    `json:"emote_type"`   // type of emote (e.g., "deal_with_it")
+	EmoteBy     string    `json:"emote_by"`     // username who triggered it
+	EmoteAt     time.Time `json:"emote_at"`     // when emote was triggered
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
 }
@@ -100,6 +104,7 @@ func main() {
 	http.HandleFunc("/api/game/state", corsMiddleware(handleGameState))
 	http.HandleFunc("/api/game/move", corsMiddleware(handleGameMove))
 	http.HandleFunc("/api/game/leave", corsMiddleware(handleLeaveGame))
+	http.HandleFunc("/api/game/emote", corsMiddleware(handleGameEmote))
 
 	// Serve static files
 	fs := http.FileServer(http.Dir("."))
@@ -682,9 +687,17 @@ func handleGameState(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	games.mu.RLock()
+	games.mu.Lock()
 	room := games.rooms[roomID]
-	games.mu.RUnlock()
+	if room != nil {
+		// Auto-clear emote after 3 seconds
+		if room.ShowEmote && time.Since(room.EmoteAt) > 3*time.Second {
+			room.ShowEmote = false
+			room.EmoteType = ""
+			room.EmoteBy = ""
+		}
+	}
+	games.mu.Unlock()
 
 	if room == nil {
 		jsonError(w, "Game not found", http.StatusNotFound)
@@ -874,6 +887,60 @@ func handleLeaveGame(w http.ResponseWriter, r *http.Request) {
 
 	games.mu.Unlock()
 	jsonResponse(w, map[string]string{"status": "ok"})
+}
+
+// handleGameEmote triggers an emote for both players to see
+func handleGameEmote(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	user := getUserFromToken(r)
+	if user == nil {
+		jsonError(w, "Not authenticated", http.StatusUnauthorized)
+		return
+	}
+
+	var req struct {
+		RoomID    string `json:"room_id"`
+		EmoteType string `json:"emote_type"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		jsonError(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	games.mu.Lock()
+	room := games.rooms[req.RoomID]
+	if room == nil {
+		games.mu.Unlock()
+		jsonError(w, "Game not found", http.StatusNotFound)
+		return
+	}
+
+	// Verify user is in this game
+	isInGame := (room.PlayerX != nil && room.PlayerX.ID == user.ID) ||
+		(room.PlayerO != nil && room.PlayerO.ID == user.ID)
+	if !isInGame {
+		games.mu.Unlock()
+		jsonError(w, "You are not in this game", http.StatusForbidden)
+		return
+	}
+
+	// Set the emote
+	room.ShowEmote = true
+	room.EmoteType = req.EmoteType
+	room.EmoteBy = user.Username
+	room.EmoteAt = time.Now()
+	room.UpdatedAt = time.Now()
+
+	games.mu.Unlock()
+
+	log.Printf("Game %s: %s triggered emote %s", room.Code, user.Username, req.EmoteType)
+
+	jsonResponse(w, room)
 }
 
 // jsonResponse sends a JSON response

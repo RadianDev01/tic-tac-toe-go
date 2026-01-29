@@ -1033,6 +1033,7 @@
                 this.mySymbol = null;
                 this.pollInterval = null;
                 this.isOnlineMode = false;
+                this.lastEmoteAt = null; // Track last shown emote to avoid re-triggering
                 this.init();
             }
 
@@ -1271,6 +1272,20 @@
                     });
                 }
 
+                // Check for emote to show
+                if (this.currentRoom.show_emote && this.currentRoom.emote_at) {
+                    const emoteTime = new Date(this.currentRoom.emote_at).getTime();
+                    // Only show if this is a new emote we haven't shown yet
+                    if (this.lastEmoteAt !== emoteTime) {
+                        this.lastEmoteAt = emoteTime;
+                        if (this.currentRoom.emote_type === 'deal_with_it') {
+                            showMeme();
+                            // Auto-hide after 3 seconds
+                            setTimeout(() => hideMeme(), 3000);
+                        }
+                    }
+                }
+
                 // Update status display
                 this.updateStatus();
             }
@@ -1385,6 +1400,32 @@
                     const btn = document.getElementById('copyCodeBtn');
                     btn.textContent = 'Copied!';
                     setTimeout(() => btn.textContent = 'Copy Code', 2000);
+                }
+            }
+
+            async sendEmote(emoteType) {
+                if (!this.currentRoom) return;
+
+                try {
+                    const response = await fetch('/api/game/emote', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': userManager.token
+                        },
+                        body: JSON.stringify({
+                            room_id: this.currentRoom.id,
+                            emote_type: emoteType
+                        })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        this.currentRoom = data;
+                        this.syncGameState();
+                    }
+                } catch (err) {
+                    console.error('Error sending emote:', err);
                 }
             }
 
@@ -1663,7 +1704,17 @@
             }, 300);
         }
 
-        sillyBtn.addEventListener('click', showMeme);
+        async function handleSillyButton() {
+            // In online multiplayer mode, send emote to both players
+            if (multiplayer.isInGame()) {
+                await multiplayer.sendEmote('deal_with_it');
+            } else {
+                // Local mode - just show locally
+                showMeme();
+            }
+        }
+
+        sillyBtn.addEventListener('click', handleSillyButton);
         memeOverlay.addEventListener('click', hideMeme);
 
         // Dark mode functionality
