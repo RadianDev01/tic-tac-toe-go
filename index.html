@@ -60,7 +60,7 @@
         .container {
             text-align: center;
             background: var(--container-bg);
-            padding: 40px;
+            padding: 30px 35px;
             border-radius: 20px;
             box-shadow: 0 20px 60px var(--container-shadow);
             transition: background 0.3s ease, box-shadow 0.3s ease;
@@ -68,42 +68,43 @@
 
         h1 {
             color: var(--text-primary);
-            margin-bottom: 10px;
-            font-size: 2.5em;
+            margin-bottom: 8px;
+            font-size: 2.2em;
             transition: color 0.3s ease;
         }
 
         .status {
-            font-size: 1.5em;
-            margin: 20px 0;
+            font-size: 1.2em;
+            margin: 10px 0;
             color: var(--status-color);
             font-weight: bold;
-            min-height: 40px;
+            min-height: 30px;
             transition: color 0.3s ease;
         }
 
-        .board-size-selector {
-            margin: 20px 0;
+        .game-info-row {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
+            gap: 25px;
+            margin: 10px 0;
+            flex-wrap: wrap;
         }
 
-        .board-size-selector label {
-            color: var(--text-primary);
-            font-weight: bold;
-            font-size: 1.1em;
-            transition: color 0.3s ease;
+        .board-size-selector {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
         }
 
         .size-btn {
             background: var(--cell-bg);
             color: var(--text-primary);
-            border: 3px solid var(--cell-border);
-            padding: 10px 20px;
-            font-size: 1em;
-            border-radius: 10px;
+            border: 2px solid var(--cell-border);
+            padding: 6px 14px;
+            font-size: 0.85em;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: bold;
@@ -122,10 +123,10 @@
 
         .board {
             display: grid;
-            grid-template-columns: repeat(3, 120px);
-            grid-template-rows: repeat(3, 120px);
-            gap: 10px;
-            margin: 30px auto;
+            grid-template-columns: repeat(3, 110px);
+            grid-template-rows: repeat(3, 110px);
+            gap: 8px;
+            margin: 20px auto;
             justify-content: center;
         }
 
@@ -182,10 +183,10 @@
         }
 
         .controls {
-            margin-top: 30px;
+            margin-top: 20px;
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         button {
@@ -223,15 +224,15 @@
         .score-board {
             display: flex;
             justify-content: center;
-            gap: 30px;
-            margin-top: 20px;
-            font-size: 1.1em;
+            gap: 15px;
+            margin-top: 10px;
+            font-size: 0.9em;
         }
 
         .score-item {
-            padding: 10px 20px;
+            padding: 6px 14px;
             background: var(--score-bg);
-            border-radius: 10px;
+            border-radius: 8px;
             font-weight: bold;
             transition: background 0.3s ease;
         }
@@ -253,8 +254,8 @@
 
         /* User authentication styles */
         .user-section {
-            margin-bottom: 20px;
-            padding: 15px;
+            margin-bottom: 15px;
+            padding: 10px 15px;
             background: var(--score-bg);
             border-radius: 10px;
             transition: background 0.3s ease;
@@ -269,10 +270,10 @@
         }
 
         .auth-form input {
-            padding: 10px 15px;
+            padding: 8px 12px;
             border: 2px solid var(--cell-border);
             border-radius: 8px;
-            font-size: 1em;
+            font-size: 0.95em;
             background: var(--container-bg);
             color: var(--text-primary);
             transition: all 0.3s ease;
@@ -284,8 +285,8 @@
         }
 
         .auth-btn {
-            padding: 10px 20px;
-            font-size: 0.9em;
+            padding: 8px 16px;
+            font-size: 0.85em;
             border-radius: 8px;
         }
 
@@ -299,37 +300,37 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
         .user-info .username {
             font-weight: bold;
             color: var(--player-x);
-            font-size: 1.1em;
+            font-size: 1em;
         }
 
         .user-info .user-stats {
             color: var(--text-secondary);
-            font-size: 0.95em;
+            font-size: 0.85em;
         }
 
         .logout-btn {
-            padding: 8px 15px;
-            font-size: 0.85em;
+            padding: 6px 12px;
+            font-size: 0.8em;
             background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
         }
 
         .error-message {
             color: #e74c3c;
-            font-size: 0.9em;
-            margin-top: 10px;
+            font-size: 0.85em;
+            margin-top: 8px;
         }
 
         /* Leaderboard styles */
         .leaderboard-btn {
-            padding: 10px 20px;
-            font-size: 0.9em;
+            padding: 6px 14px;
+            font-size: 0.8em;
             background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
         }
 
@@ -409,6 +410,149 @@
         .close-leaderboard {
             margin-top: 20px;
             width: 100%;
+        }
+
+        /* Multiplayer styles */
+        .game-mode-selector {
+            margin: 10px 0;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .mode-btn {
+            padding: 8px 20px;
+            font-size: 0.85em;
+            border-radius: 8px;
+            background: var(--cell-bg);
+            color: var(--text-primary);
+            border: 2px solid var(--cell-border);
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        .multiplayer-section {
+            margin: 10px 0;
+            padding: 12px;
+            background: var(--score-bg);
+            border-radius: 10px;
+            display: none;
+        }
+
+        .multiplayer-section.show {
+            display: block;
+        }
+
+        .multiplayer-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .mp-btn {
+            padding: 10px 20px;
+            font-size: 0.9em;
+            border-radius: 8px;
+        }
+
+        .mp-btn.create {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+        }
+
+        .mp-btn.join {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        }
+
+        .game-code-display {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: var(--player-x);
+            letter-spacing: 6px;
+            margin: 8px 0;
+        }
+
+        .waiting-message {
+            color: var(--text-secondary);
+            font-size: 0.85em;
+            margin: 6px 0;
+        }
+
+        .opponent-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin: 0;
+        }
+
+        .opponent-info .vs-text {
+            color: var(--text-secondary);
+            font-size: 0.85em;
+        }
+
+        .player-card {
+            padding: 6px 14px;
+            background: var(--cell-bg);
+            border-radius: 6px;
+            border: 2px solid var(--cell-border);
+            font-size: 0.9em;
+        }
+
+        .player-card.current-turn {
+            border-color: var(--winning-bg);
+            box-shadow: 0 0 8px var(--winning-bg);
+        }
+
+        .player-card .symbol {
+            font-weight: bold;
+        }
+
+        .player-card .symbol.x { color: var(--player-x); }
+        .player-card .symbol.o { color: var(--player-o); }
+
+        .game-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 8px;
+        }
+
+        .join-form {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .join-form input {
+            padding: 8px 12px;
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            width: 120px;
+            text-align: center;
+            border: 2px solid var(--cell-border);
+            border-radius: 8px;
+            background: var(--container-bg);
+            color: var(--text-primary);
+        }
+
+        .leave-btn {
+            padding: 6px 12px;
+            font-size: 0.75em;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+
+        .copy-btn {
+            padding: 6px 12px;
+            font-size: 0.75em;
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
         }
 
         @media (prefers-color-scheme: dark) {
@@ -569,25 +713,69 @@
             <div class="error-message" id="authError"></div>
         </div>
 
-        <div class="score-board">
-            <div class="score-item">
-                <span class="score-x">X: <span id="scoreX">0</span></span>
-            </div>
-            <div class="score-item">
-                <span class="score-draw">Draws: <span id="scoreDraw">0</span></span>
-            </div>
-            <div class="score-item">
-                <span class="score-o">O: <span id="scoreO">0</span></span>
-            </div>
+        <!-- Game Mode Selector -->
+        <div class="game-mode-selector" id="gameModeSelector">
+            <button class="mode-btn active" data-mode="local">Local Play</button>
+            <button class="mode-btn" data-mode="online">Online Play</button>
         </div>
 
-        <div class="board-size-selector">
-            <label>Board Size:</label>
-            <button class="size-btn active" data-size="3">3×3</button>
-            <button class="size-btn" data-size="5">5×5</button>
+        <!-- Multiplayer Section (hidden by default) -->
+        <div class="multiplayer-section" id="multiplayerSection">
+            <!-- Initial state: create or join -->
+            <div id="mpLobby">
+                <div class="multiplayer-buttons">
+                    <button class="mp-btn create" id="createGameBtn">Create Game</button>
+                    <button class="mp-btn join" id="showJoinBtn">Join Game</button>
+                </div>
+                <div class="join-form" id="joinForm" style="display: none;">
+                    <input type="text" id="joinCodeInput" placeholder="CODE" maxlength="6">
+                    <button class="mp-btn join" id="joinGameBtn">Join</button>
+                </div>
+            </div>
+            <!-- Waiting for opponent -->
+            <div id="mpWaiting" style="display: none;">
+                <div class="waiting-message">Share this code with a friend:</div>
+                <div class="game-code-display" id="gameCodeDisplay">------</div>
+                <button class="copy-btn" id="copyCodeBtn">Copy Code</button>
+                <div class="waiting-message">Waiting for opponent to join...</div>
+                <button class="leave-btn" id="leaveWaitingBtn">Cancel</button>
+            </div>
+            <!-- Game in progress -->
+            <div id="mpGame" style="display: none;">
+                <div class="opponent-info">
+                    <div class="player-card" id="playerXCard">
+                        <span class="symbol x">X</span>: <span id="playerXName">-</span>
+                    </div>
+                    <span class="vs-text">vs</span>
+                    <div class="player-card" id="playerOCard">
+                        <span class="symbol o">O</span>: <span id="playerOName">-</span>
+                    </div>
+                    <button class="leave-btn" id="leaveGameBtn">Leave</button>
+                </div>
+            </div>
+            <div class="error-message" id="mpError"></div>
         </div>
 
         <div class="status" id="status">Player X's turn</div>
+
+        <div class="game-info-row">
+            <div class="score-board">
+                <div class="score-item">
+                    <span class="score-x">X: <span id="scoreX">0</span></span>
+                </div>
+                <div class="score-item">
+                    <span class="score-draw">Draws: <span id="scoreDraw">0</span></span>
+                </div>
+                <div class="score-item">
+                    <span class="score-o">O: <span id="scoreO">0</span></span>
+                </div>
+            </div>
+
+            <div class="board-size-selector">
+                <button class="size-btn active" data-size="3">3×3</button>
+                <button class="size-btn" data-size="5">5×5</button>
+            </div>
+        </div>
 
         <div class="board" id="board">
             <!-- Cells are generated dynamically by JavaScript -->
@@ -838,6 +1026,425 @@
         // Initialize user manager
         const userManager = new UserManager();
 
+        // Multiplayer Manager
+        class MultiplayerManager {
+            constructor() {
+                this.currentRoom = null;
+                this.mySymbol = null;
+                this.pollInterval = null;
+                this.isOnlineMode = false;
+                this.lastEmoteAt = null; // Track last shown emote to avoid re-triggering
+                this.init();
+            }
+
+            init() {
+                // Mode selector
+                document.querySelectorAll('.mode-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => this.switchMode(e));
+                });
+
+                // Multiplayer buttons
+                document.getElementById('createGameBtn').addEventListener('click', () => this.createGame());
+                document.getElementById('showJoinBtn').addEventListener('click', () => this.showJoinForm());
+                document.getElementById('joinGameBtn').addEventListener('click', () => this.joinGame());
+                document.getElementById('copyCodeBtn').addEventListener('click', () => this.copyCode());
+                document.getElementById('leaveWaitingBtn').addEventListener('click', () => this.leaveGame());
+                document.getElementById('leaveGameBtn').addEventListener('click', () => this.leaveGame());
+
+                // Join code input - auto uppercase and enter key
+                document.getElementById('joinCodeInput').addEventListener('input', (e) => {
+                    e.target.value = e.target.value.toUpperCase();
+                });
+                document.getElementById('joinCodeInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.joinGame();
+                });
+            }
+
+            switchMode(e) {
+                const mode = e.target.getAttribute('data-mode');
+                document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+
+                this.isOnlineMode = mode === 'online';
+
+                if (this.isOnlineMode) {
+                    document.getElementById('multiplayerSection').classList.add('show');
+                    // Hide board size selector in online mode (controlled by room creator)
+                    document.querySelector('.game-info-row').style.display = 'none';
+                } else {
+                    document.getElementById('multiplayerSection').classList.remove('show');
+                    document.querySelector('.game-info-row').style.display = 'flex';
+                    this.leaveGame();
+                }
+            }
+
+            async createGame() {
+                if (!userManager.isLoggedIn()) {
+                    this.showError('Please login first');
+                    return;
+                }
+
+                const boardSize = game.boardSize;
+
+                try {
+                    const response = await fetch('/api/game/create', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': userManager.token
+                        },
+                        body: JSON.stringify({ board_size: boardSize })
+                    });
+
+                    const data = await response.json();
+                    if (response.ok) {
+                        this.currentRoom = data;
+                        this.mySymbol = 'X';
+                        this.showWaiting();
+                        this.startPolling();
+                        this.clearError();
+                    } else {
+                        this.showError(data.error || 'Failed to create game');
+                    }
+                } catch (err) {
+                    this.showError('Connection error');
+                }
+            }
+
+            showJoinForm() {
+                document.getElementById('joinForm').style.display = 'flex';
+                document.getElementById('joinCodeInput').focus();
+            }
+
+            async joinGame() {
+                if (!userManager.isLoggedIn()) {
+                    this.showError('Please login first');
+                    return;
+                }
+
+                const code = document.getElementById('joinCodeInput').value.trim();
+                if (!code || code.length !== 6) {
+                    this.showError('Please enter a 6-character code');
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/api/game/join', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': userManager.token
+                        },
+                        body: JSON.stringify({ code })
+                    });
+
+                    const data = await response.json();
+                    if (response.ok) {
+                        this.currentRoom = data;
+                        this.mySymbol = 'O';
+                        this.showGame();
+                        this.startPolling();
+                        this.clearError();
+                        // Update the game board to match room settings
+                        this.syncGameState();
+                    } else {
+                        this.showError(data.error || 'Failed to join game');
+                    }
+                } catch (err) {
+                    this.showError('Connection error');
+                }
+            }
+
+            showWaiting() {
+                document.getElementById('mpLobby').style.display = 'none';
+                document.getElementById('mpWaiting').style.display = 'block';
+                document.getElementById('mpGame').style.display = 'none';
+                document.getElementById('gameCodeDisplay').textContent = this.currentRoom.code;
+            }
+
+            showGame() {
+                document.getElementById('mpLobby').style.display = 'none';
+                document.getElementById('mpWaiting').style.display = 'none';
+                document.getElementById('mpGame').style.display = 'block';
+                this.updatePlayerCards();
+            }
+
+            showLobby() {
+                document.getElementById('mpLobby').style.display = 'block';
+                document.getElementById('mpWaiting').style.display = 'none';
+                document.getElementById('mpGame').style.display = 'none';
+                document.getElementById('joinForm').style.display = 'none';
+                document.getElementById('joinCodeInput').value = '';
+            }
+
+            updatePlayerCards() {
+                if (!this.currentRoom) return;
+
+                const xName = this.currentRoom.player_x ? this.currentRoom.player_x.username : 'Waiting...';
+                const oName = this.currentRoom.player_o ? this.currentRoom.player_o.username : 'Waiting...';
+
+                document.getElementById('playerXName').textContent = xName;
+                document.getElementById('playerOName').textContent = oName;
+
+                // Highlight current turn
+                document.getElementById('playerXCard').classList.toggle('current-turn',
+                    this.currentRoom.current_turn === 'X' && this.currentRoom.status === 'playing');
+                document.getElementById('playerOCard').classList.toggle('current-turn',
+                    this.currentRoom.current_turn === 'O' && this.currentRoom.status === 'playing');
+            }
+
+            startPolling() {
+                this.stopPolling();
+                this.pollInterval = setInterval(() => this.pollGameState(), 500);
+            }
+
+            stopPolling() {
+                if (this.pollInterval) {
+                    clearInterval(this.pollInterval);
+                    this.pollInterval = null;
+                }
+            }
+
+            async pollGameState() {
+                if (!this.currentRoom) return;
+
+                try {
+                    const response = await fetch(`/api/game/state?room_id=${this.currentRoom.id}`);
+                    if (!response.ok) {
+                        // Game was deleted
+                        this.handleGameEnded();
+                        return;
+                    }
+
+                    const data = await response.json();
+                    const oldStatus = this.currentRoom.status;
+                    this.currentRoom = data;
+
+                    // Check if game just started
+                    if (oldStatus === 'waiting' && data.status === 'playing') {
+                        this.showGame();
+                        this.syncGameState();
+                    }
+
+                    // Update UI
+                    this.updatePlayerCards();
+                    this.syncGameState();
+
+                    // Check if game finished
+                    if (data.status === 'finished') {
+                        this.handleGameFinished();
+                    }
+                } catch (err) {
+                    console.error('Poll error:', err);
+                }
+            }
+
+            syncGameState() {
+                if (!this.currentRoom) return;
+
+                // Update board size if needed
+                if (game.boardSize !== this.currentRoom.board_size) {
+                    game.boardSize = this.currentRoom.board_size;
+                    game.winLength = this.currentRoom.board_size === 3 ? 3 : 4;
+                    game.totalCells = this.currentRoom.board_size * this.currentRoom.board_size;
+                    game.winningConditions = game.generateWinningConditions();
+                    game.createBoard();
+                }
+
+                // Update board cells
+                const cells = document.querySelectorAll('.cell');
+                this.currentRoom.board.forEach((value, index) => {
+                    if (cells[index]) {
+                        cells[index].textContent = value;
+                        cells[index].classList.remove('taken', 'x', 'o', 'winning');
+                        if (value) {
+                            cells[index].classList.add('taken', value.toLowerCase());
+                        }
+                    }
+                });
+
+                // Highlight winning cells
+                if (this.currentRoom.winning_line) {
+                    this.currentRoom.winning_line.forEach(index => {
+                        if (cells[index]) {
+                            cells[index].classList.add('winning');
+                        }
+                    });
+                }
+
+                // Check for emote to show
+                if (this.currentRoom.show_emote && this.currentRoom.emote_at) {
+                    const emoteTime = new Date(this.currentRoom.emote_at).getTime();
+                    // Only show if this is a new emote we haven't shown yet
+                    if (this.lastEmoteAt !== emoteTime) {
+                        this.lastEmoteAt = emoteTime;
+                        if (this.currentRoom.emote_type === 'deal_with_it') {
+                            showMeme();
+                            // Auto-hide after 3 seconds
+                            setTimeout(() => hideMeme(), 3000);
+                        }
+                    }
+                }
+
+                // Update status display
+                this.updateStatus();
+            }
+
+            updateStatus() {
+                if (!this.currentRoom) return;
+
+                const statusDisplay = document.getElementById('status');
+
+                if (this.currentRoom.status === 'waiting') {
+                    statusDisplay.textContent = 'Waiting for opponent...';
+                } else if (this.currentRoom.status === 'finished') {
+                    if (this.currentRoom.winner === 'draw') {
+                        statusDisplay.textContent = "It's a draw!";
+                    } else {
+                        const winnerName = this.currentRoom.winner === 'X'
+                            ? this.currentRoom.player_x?.username
+                            : this.currentRoom.player_o?.username;
+                        statusDisplay.textContent = `${winnerName} (${this.currentRoom.winner}) wins!`;
+                    }
+                } else {
+                    const isMyTurn = this.currentRoom.current_turn === this.mySymbol;
+                    if (isMyTurn) {
+                        statusDisplay.textContent = `Your turn (${this.mySymbol})`;
+                    } else {
+                        const opponentName = this.currentRoom.current_turn === 'X'
+                            ? this.currentRoom.player_x?.username
+                            : this.currentRoom.player_o?.username;
+                        statusDisplay.textContent = `${opponentName}'s turn (${this.currentRoom.current_turn})`;
+                    }
+                }
+            }
+
+            handleGameFinished() {
+                this.stopPolling();
+                // Update user stats display
+                userManager.updateUserStats();
+            }
+
+            handleGameEnded() {
+                this.stopPolling();
+                this.currentRoom = null;
+                this.mySymbol = null;
+                this.showLobby();
+                game.resetGame();
+            }
+
+            async makeMove(index) {
+                if (!this.currentRoom || this.currentRoom.status !== 'playing') return false;
+                if (this.currentRoom.current_turn !== this.mySymbol) return false;
+                if (this.currentRoom.board[index]) return false;
+
+                try {
+                    const response = await fetch('/api/game/move', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': userManager.token
+                        },
+                        body: JSON.stringify({
+                            room_id: this.currentRoom.id,
+                            index: index
+                        })
+                    });
+
+                    const data = await response.json();
+                    if (response.ok) {
+                        this.currentRoom = data;
+                        this.syncGameState();
+                        this.updatePlayerCards();
+
+                        if (data.status === 'finished') {
+                            this.handleGameFinished();
+                        }
+                        return true;
+                    } else {
+                        this.showError(data.error || 'Invalid move');
+                        return false;
+                    }
+                } catch (err) {
+                    this.showError('Connection error');
+                    return false;
+                }
+            }
+
+            async leaveGame() {
+                if (this.currentRoom) {
+                    try {
+                        await fetch('/api/game/leave', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': userManager.token
+                            },
+                            body: JSON.stringify({ room_id: this.currentRoom.id })
+                        });
+                    } catch (err) {
+                        // Ignore errors
+                    }
+                }
+
+                this.stopPolling();
+                this.currentRoom = null;
+                this.mySymbol = null;
+                this.showLobby();
+                game.resetGame();
+            }
+
+            copyCode() {
+                if (this.currentRoom) {
+                    navigator.clipboard.writeText(this.currentRoom.code);
+                    const btn = document.getElementById('copyCodeBtn');
+                    btn.textContent = 'Copied!';
+                    setTimeout(() => btn.textContent = 'Copy Code', 2000);
+                }
+            }
+
+            async sendEmote(emoteType) {
+                if (!this.currentRoom) return;
+
+                try {
+                    const response = await fetch('/api/game/emote', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': userManager.token
+                        },
+                        body: JSON.stringify({
+                            room_id: this.currentRoom.id,
+                            emote_type: emoteType
+                        })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        this.currentRoom = data;
+                        this.syncGameState();
+                    }
+                } catch (err) {
+                    console.error('Error sending emote:', err);
+                }
+            }
+
+            showError(message) {
+                document.getElementById('mpError').textContent = message;
+            }
+
+            clearError() {
+                document.getElementById('mpError').textContent = '';
+            }
+
+            isInGame() {
+                return this.isOnlineMode && this.currentRoom && this.currentRoom.status === 'playing';
+            }
+        }
+
+        // Initialize multiplayer manager
+        const multiplayer = new MultiplayerManager();
+
         class TicTacToe {
             constructor(boardSize = 3) {
                 this.boardSize = boardSize;
@@ -986,6 +1593,13 @@
                 const cell = e.target;
                 const index = parseInt(cell.getAttribute('data-index'));
 
+                // Handle online multiplayer mode
+                if (multiplayer.isInGame()) {
+                    multiplayer.makeMove(index);
+                    return;
+                }
+
+                // Local mode
                 if (this.board[index] !== '' || !this.gameActive) {
                     return;
                 }
@@ -1090,7 +1704,17 @@
             }, 300);
         }
 
-        sillyBtn.addEventListener('click', showMeme);
+        async function handleSillyButton() {
+            // In online multiplayer mode, send emote to both players
+            if (multiplayer.isInGame()) {
+                await multiplayer.sendEmote('deal_with_it');
+            } else {
+                // Local mode - just show locally
+                showMeme();
+            }
+        }
+
+        sillyBtn.addEventListener('click', handleSillyButton);
         memeOverlay.addEventListener('click', hideMeme);
 
         // Dark mode functionality
